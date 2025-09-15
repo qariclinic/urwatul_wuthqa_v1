@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Build APK from urwatul_wuthqa_v1_
+    name: Build APK
     runs-on: ubuntu-latest
 
     steps:
@@ -18,21 +18,27 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.13.0' # اپنی Flutter ورژن کے مطابق بدل لیں
+          flutter-version: '3.13.0'
 
       - name: Disable Flutter Telemetry
         run: flutter --disable-telemetry
 
+      - name: Check directory structure
+        run: |
+          pwd
+          ls -la
+          echo "Checking if Flutter project exists:"
+          find . -name "pubspec.yaml" -type f
+
       - name: Install dependencies
         run: flutter pub get
-        working-directory: urwatul_wuthqa_v1_with_prod_compose_and_ci/urwatul_wuthqa_v1_
+        # working-directory ہٹا دیں یا درست کریں
 
       - name: Build APK
         run: flutter build apk --release
-        working-directory: urwatul_wuthqa_v1_with_prod_compose_and_ci/urwatul_wuthqa_v1_
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: urwatul-wuthqa-apk
-          path: urwatul_wuthqa_v1_with_prod_compose_and_ci/urwatul_wuthqa_v1_/build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
