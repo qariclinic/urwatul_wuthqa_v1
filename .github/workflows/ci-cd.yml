@@ -18,16 +18,22 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.0' # یا اس سے جدید ورژن
-          # flutter-version: 'stable' # سب سے جدید stable ورژن کے لیے
-
-      - name: Check Flutter and Dart versions
-        run: |
-          flutter --version
-          dart --version
+          flutter-version: 'stable'
 
       - name: Install dependencies
         run: flutter pub get
+
+      - name: Clean and repair Android project
+        run: |
+          # Android folder کو clean کریں
+          rm -rf android/build
+          rm -rf android/app/build
+          
+          # Gradle wrapper کو update کریں
+          cd android
+          chmod +x gradlew
+          ./gradlew wrapper --gradle-version=8.0
+          cd ..
 
       - name: Build APK
         run: flutter build apk --release
@@ -37,5 +43,3 @@ jobs:
         with:
           name: urwatul-wuthqa-apk
           path: build/app/outputs/flutter-apk/app-release.apk
-
-          
