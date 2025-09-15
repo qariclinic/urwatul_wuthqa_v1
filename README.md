@@ -1,0 +1,1 @@
+Urwatul Wuthqa - Full Flutter project (generated). Replace assets/web and assets/pdf with your real files. Build with flutter build apk.

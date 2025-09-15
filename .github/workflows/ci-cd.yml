@@ -1,0 +1,38 @@
+name: Build Flutter APK (Urwatul Wuthqa)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build APK from urwatul_wuthqa_v1_
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.13.0' # اپنی Flutter ورژن کے مطابق بدل لیں
+
+      - name: Disable Flutter Telemetry
+        run: flutter --disable-telemetry
+
+      - name: Install dependencies
+        run: flutter pub get
+        working-directory: urwatul_wuthqa_v1_with_prod_compose_and_ci/urwatul_wuthqa_v1_
+
+      - name: Build APK
+        run: flutter build apk --release
+        working-directory: urwatul_wuthqa_v1_with_prod_compose_and_ci/urwatul_wuthqa_v1_
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: urwatul-wuthqa-apk
+          path: urwatul_wuthqa_v1_with_prod_compose_and_ci/urwatul_wuthqa_v1_/build/app/outputs/flutter-apk/app-release.apk
